@@ -24,6 +24,12 @@ public class CommentService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    // 게시글에 달린 댓글 목록 조회 (비로그인 허용)
+    public List<CommentResponse> getCommentsByPostId(Long postId) {
+        return commentRepository.findByPostIdAndDeletedAtIsNull(postId).stream()
+                .map(CommentResponse::fromEntity)
+                .collect(Collectors.toList());
+    }
     // 댓글 등록
     @Transactional
     public Long createComment(CommentRequest request, String userEmail) {
@@ -46,12 +52,12 @@ public class CommentService {
 
     }
 
-    // 게시글에 달린 댓글 목록 조회 (비로그인 허용)
-    public List<CommentResponse> getCommentsByPostId(Long postId) {
-        return commentRepository.findByPostIdAndDeletedAtIsNull(postId).stream()
-                .map(CommentResponse::fromEntity)
-                .collect(Collectors.toList());
+    public boolean isCommentAuthor(Long commentId, String email) {
+        return commentRepository.findById(commentId)
+                .map(comment -> comment.getAuthor().getEmail().equals(email))
+                .orElse(false);
     }
+
 
     // 댓글 삭제
     @Transactional

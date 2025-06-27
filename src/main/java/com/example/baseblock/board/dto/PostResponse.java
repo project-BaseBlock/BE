@@ -10,6 +10,7 @@ public class PostResponse {
     private  String title;
     private String content;
     private String author;
+    private String authorEmail;
 
     public static PostResponse fromEntity(Post post) {
         PostResponse response = new PostResponse();
@@ -17,6 +18,7 @@ public class PostResponse {
         response.title = post.getTitle();
         response.content = post.getContent();
         response.author = post.getAuthor().getNickname();
+        response.authorEmail = post.getAuthor().getEmail();
         return response;
     }
 

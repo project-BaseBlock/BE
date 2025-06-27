@@ -24,7 +24,7 @@ public class CommentController {
     }
 
     // 댓글 작성
-    @PostMapping
+    @PostMapping("/new")
     @PreAuthorize("isAuthenticated()")
     public Long createComment(@RequestBody CommentRequest request, Authentication authentication) {
         String email = authentication.getName(); // 로그인한 유저 email
@@ -33,7 +33,7 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{commentId}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("@commentService.isCommentAuthor(#commentId, authentication.name)")
     public void deleteComment(@PathVariable Long commentId, Authentication authentication) {
         String email = authentication.getName();
         commentService.deleteComment(commentId, email);

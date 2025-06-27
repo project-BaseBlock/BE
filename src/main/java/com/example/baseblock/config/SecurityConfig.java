@@ -57,8 +57,11 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/**", "/login", "/swagger-ui/**", "/v3/api-docs/**").permitAll() //Swagger 쓰려면 /swagger-ui/**, /v3/api-docs/**는 반드시 열어줘야 함
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "MASTER")
-                        .requestMatchers("/api/secure-test", "/posts").authenticated()
+                        .requestMatchers("/posts", "/posts/*", "/comments/*").permitAll()
+                        .requestMatchers("/admin/posts/**").hasAnyRole("ADMIN", "MASTER")
+                        .requestMatchers("/admin/users/**").hasRole("MASTER")
+                        .requestMatchers("/posts/new", "/comments/new").hasAnyRole("USER", "ADMIN", "MASTER")
+                        .requestMatchers("/api/secure-test").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)

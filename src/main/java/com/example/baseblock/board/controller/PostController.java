@@ -33,7 +33,7 @@ public class PostController {
     }
 
     //게시글 작성
-    @PostMapping("/posts")
+    @PostMapping("/new")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MASTER')")
     public ResponseEntity<Void> createPost(@RequestBody PostCreateRequest request, Authentication authentication) {
         String email = authentication.getName(); // 로그인한 사용자 이메일
@@ -43,7 +43,7 @@ public class PostController {
 
     //게시글 수정
     @PutMapping("/{postId}")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MASTER')")
+    @PreAuthorize("@postService.isPostAuthor(#postId, authentication.name)")
     public ResponseEntity<Void> updatePost(@PathVariable Long postId,
                                            @RequestBody PostUpdateRequest request,
                                            Authentication authentication) {
@@ -53,10 +53,11 @@ public class PostController {
     }
 
     //게시글 삭제
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id, Authentication authentication) {
+    @DeleteMapping("/{postId}")
+    @PreAuthorize("@postService.isPostAuthor(#postId, authentication.name)")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId, Authentication authentication) {
         String email = authentication.getName(); // 현재 로그인한 유저
-        postService.deletePost(id, email);
+        postService.deletePost(postId, email);
         return ResponseEntity.noContent().build();
     }
 

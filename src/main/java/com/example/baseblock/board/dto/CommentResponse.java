@@ -14,12 +14,14 @@ public class CommentResponse {
     private String content;
     private String author;
     private LocalDateTime createdAt;
+    private String authorEmail;
 
     public static CommentResponse fromEntity(Comment comment) {
         return CommentResponse.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
                 .author(comment.getAuthor().getNickname())
+                .authorEmail(comment.getAuthor().getEmail())
                 .createdAt(comment.getCreatedAt())
                 .build();
     }

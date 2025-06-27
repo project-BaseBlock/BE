@@ -47,6 +47,12 @@ public class PostService {
         postRepository.save(post);
     }
 
+    public boolean isPostAuthor(Long postId, String email) {
+        return postRepository.findById(postId)
+                .map(post -> post.getAuthor().getEmail().equals(email))
+                .orElse(false);
+    }
+
     //게시글 수정
     @Transactional
     public void updatePost(Long postId, PostUpdateRequest request, String email) {

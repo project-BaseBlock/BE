@@ -6,16 +6,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class Webconfig implements WebMvcConfigurer {
-
-    @Bean
-    public WebMvcConfigurer crosConfigurer() {
-        return new WebMvcConfigurer() {
+public class WebConfig implements WebMvcConfigurer {
 
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**")  // 어떤 api에 적용할지
-                        .allowedOrigins("http://localhost:3000") // 프론트 도메인
+                registry.addMapping("/**")  // 어떤 api에 적용할지
+                        .allowedOrigins("http://localhost:5173") // 프론트 도메인
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true) //쿠키, 헤더 등 인증 정보 허용
@@ -30,7 +26,5 @@ public class Webconfig implements WebMvcConfigurer {
                 | `maxAge(3600)`           | 브라우저가 CORS preflight 요청을 1시간 동안 캐시 |
                 */
             }
-        };
-    }
 
 }

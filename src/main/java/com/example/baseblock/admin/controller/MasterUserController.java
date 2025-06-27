@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping
+@RequestMapping("/admin/users")
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('MASTER')")
 public class MasterUserController {
