@@ -7,11 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
 
 @RequiredArgsConstructor
@@ -84,7 +86,13 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         String email = getUserEmail(token); // 이메일 파싱
+        String role = getUserRole(token);
+
         UserDetails userDetails = userDetailsService.loadUserByUsername(email); // 유저 정보 불러오기
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+
+        return new UsernamePasswordAuthenticationToken(
+                userDetails
+                , ""
+                , Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)));
     }
 }
