@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/test-crawl")
+@RequestMapping("/api/schedule")
 public class GameScheduleTestController {
 
     private final GameScheduleSyncService syncService;
 
-    @PostMapping
-    public ResponseEntity<String> testCrawl() {
+    @PostMapping("/manual-test")
+    public String runManualTest() {
         syncService.manualTest();
-        return ResponseEntity.ok("크롤링 테스트 완료!");
+        return "✅ 수동 테스트 완료";
     }
 }

@@ -1,7 +1,7 @@
 package com.example.baseblock.game.entity;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;

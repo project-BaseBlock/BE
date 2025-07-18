@@ -42,13 +42,20 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
+	//Json 라이브러리
+	implementation 'org.json:json:20230227'
+
 	// JWT 라이브러리 (JJWT)
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 처리용 (Jackson 사용 시)
 
-	//셀리니움
-	implementation 'org.seleniumhq.selenium:selenium-java:4.10.0'
+	//셀리니움. 망함. 쓰레기. 크보도 쓰레기
+	implementation "org.seleniumhq.selenium:selenium-java:4.21.0"
+
+	//Jsoup이야~
+	//implementation 'org.jsoup:jsoup:1.17.2'
+
 
 }
 

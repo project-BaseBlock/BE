@@ -15,18 +15,19 @@ public class GameScheduleSyncService {
     private final KboCrawler crawler;
     private final GameScheduleService gameScheduleService;
 
-    // ✅ 수동 테스트용 메서드 (컨트롤러에서 호출)
+    // ✅ 수동 테스트용 메서드: 현재 월만 크롤링
     public void manualTest() {
-        List<GameScheduleDto> list = crawler.crawlCurrentAndNextMonthIfApplicable();
+        List<GameScheduleDto> list = crawler.crawlAllMonthsUpToOctober();
         gameScheduleService.saveOrUpdate(list);
-        System.out.println("[🧪 TEST] 수동 크롤링 완료. 저장 수: " + list.size());
+        System.out.println("✅ 수동 전체 크롤링 완료: " + list.size() + "개 저장됨");
     }
 
     // ✅ 자동 크롤링 스케줄 (매일 01:00, 17:00)
     @Scheduled(cron = "0 0 1,17 * * *")
     public void syncScheduleDaily() {
-        List<GameScheduleDto> list = crawler.crawlCurrentAndNextMonthIfApplicable();
+        List<GameScheduleDto> list = crawler.crawlAllMonthsUpToOctober();
         gameScheduleService.saveOrUpdate(list);
+
         System.out.println("[⏰ SCHEDULE] 자동 크롤링 완료. 저장 수: " + list.size());
     }
 }

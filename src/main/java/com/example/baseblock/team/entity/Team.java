@@ -4,7 +4,7 @@ package com.example.baseblock.team.entity;
 import com.example.baseblock.stadium.entity.Stadium;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.Id;
+import jakarta.persistence.Id;
 
 @Entity
 @Getter
@@ -24,6 +24,6 @@ public class Team {
     @JoinColumn(name = "stadium_id")
     private Stadium stadium;
 
-    private String uuid;
+    private String imageName;
 
 }
