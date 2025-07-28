@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class GameScheduleDto {
+public class GameSchedule {
 
     private String homeTeamName;
     private String awayTeamName;

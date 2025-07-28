@@ -1,7 +1,6 @@
 package com.example.baseblock.game.service;
 
-import com.example.baseblock.game.dto.GameScheduleDto;
-import com.example.baseblock.game.entity.GameSchedule;
+import com.example.baseblock.game.dto.GameSchedule;
 import com.example.baseblock.game.repository.GameScheduleRepository;
 import com.example.baseblock.stadium.entity.Stadium;
 import com.example.baseblock.stadium.repository.StadiumRepository;
@@ -24,8 +23,8 @@ public class GameScheduleService {
     private final StadiumRepository stadiumRepository;
 
     @Transactional
-    public void saveOrUpdate(List<GameScheduleDto> dtoList) {
-        for (GameScheduleDto dto : dtoList) {
+    public void saveOrUpdate(List<GameSchedule> dtoList) {
+        for (GameSchedule dto : dtoList) {
             String homeName = dto.getHomeTeamName();
             String awayName = dto.getAwayTeamName();
             String stadiumName = dto.getStadiumName();
@@ -47,11 +46,11 @@ public class GameScheduleService {
                 continue; // 저장하지 않고 넘어감
             }
 
-            GameSchedule schedule = gameScheduleRepository
+            com.example.baseblock.game.entity.GameSchedule schedule = gameScheduleRepository
                     .findByDateAndHome_IdAndAway_Id(dto.getDate(), home.getId(), away.getId())
                     .orElseGet(() -> {
                         log.info("➕ 새로운 경기 일정 생성: {} vs {} on {}", homeName, awayName, dto.getDate());
-                        return GameSchedule.builder()
+                        return com.example.baseblock.game.entity.GameSchedule.builder()
                                 .home(home)
                                 .away(away)
                                 .date(dto.getDate())

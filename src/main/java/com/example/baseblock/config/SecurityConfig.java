@@ -56,7 +56,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**", "/login", "/swagger-ui/**", "/v3/api-docs/**", "/api/schedule/manual-test").permitAll() //Swagger 쓰려면 /swagger-ui/**, /v3/api-docs/**는 반드시 열어줘야 함
+                        .requestMatchers("/user/**", "/login", "/swagger-ui/**", "/v3/api-docs/**", "/api/schedule/manual-test", "/api/schedule").permitAll() //Swagger 쓰려면 /swagger-ui/**, /v3/api-docs/**는 반드시 열어줘야 함
                         .requestMatchers("/posts", "/posts/*", "/comments/*").permitAll()
                         .requestMatchers("/admin/posts/**").hasAnyRole("ADMIN", "MASTER")
                         .requestMatchers("/admin/users/**").hasRole("MASTER")

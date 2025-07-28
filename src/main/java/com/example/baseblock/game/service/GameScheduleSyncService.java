@@ -1,7 +1,7 @@
 package com.example.baseblock.game.service;
 
 import com.example.baseblock.game.crawler.KboCrawler;
-import com.example.baseblock.game.dto.GameScheduleDto;
+import com.example.baseblock.game.dto.GameSchedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ public class GameScheduleSyncService {
 
     // ✅ 수동 테스트용 메서드: 현재 월만 크롤링
     public void manualTest() {
-        List<GameScheduleDto> list = crawler.crawlAllMonthsUpToOctober();
+        List<GameSchedule> list = crawler.crawlAllMonthsUpToOctober();
         gameScheduleService.saveOrUpdate(list);
         System.out.println("✅ 수동 전체 크롤링 완료: " + list.size() + "개 저장됨");
     }
@@ -25,7 +25,7 @@ public class GameScheduleSyncService {
     // ✅ 자동 크롤링 스케줄 (매일 01:00, 17:00)
     @Scheduled(cron = "0 0 1,17 * * *")
     public void syncScheduleDaily() {
-        List<GameScheduleDto> list = crawler.crawlAllMonthsUpToOctober();
+        List<GameSchedule> list = crawler.crawlAllMonthsUpToOctober();
         gameScheduleService.saveOrUpdate(list);
 
         System.out.println("[⏰ SCHEDULE] 자동 크롤링 완료. 저장 수: " + list.size());

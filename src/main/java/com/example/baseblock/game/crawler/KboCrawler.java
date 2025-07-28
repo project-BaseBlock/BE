@@ -1,6 +1,6 @@
 package com.example.baseblock.game.crawler;
 
-import com.example.baseblock.game.dto.GameScheduleDto;
+import com.example.baseblock.game.dto.GameSchedule;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,8 +17,8 @@ public class KboCrawler {
 
     private static final String URL = "https://www.koreabaseball.com/Schedule/Schedule.aspx";
 
-    public List<GameScheduleDto> crawlAllMonthsUpToOctober() {
-        List<GameScheduleDto> result = new ArrayList<>();
+    public List<GameSchedule> crawlAllMonthsUpToOctober() {
+        List<GameSchedule> result = new ArrayList<>();
         int currentMonth = LocalDate.now().getMonthValue();
 
         for (int month = currentMonth; month <= 10; month++) {
@@ -28,8 +28,8 @@ public class KboCrawler {
         return result;
     }
 
-    public List<GameScheduleDto> crawlMonth(int month) {
-        List<GameScheduleDto> result = new ArrayList<>();
+    public List<GameSchedule> crawlMonth(int month) {
+        List<GameSchedule> result = new ArrayList<>();
 
         ChromeOptions options = new ChromeOptions();
         WebDriver driver = new ChromeDriver(options);
@@ -98,7 +98,7 @@ public class KboCrawler {
 
                     if (stadium == null || stadium.isBlank()) continue;
 
-                    result.add(GameScheduleDto.builder()
+                    result.add(GameSchedule.builder()
                             .homeTeamName(home)
                             .awayTeamName(away)
                             .stadiumName(stadium)
