@@ -7,7 +7,8 @@ public record GameScheduleResponse(
         String date,
         String homeTeam,
         String awayTeam,
-        String stadiumName
+        String stadiumName,
+        Long stadiumId
 ) {
     public static GameScheduleResponse fromEntity(GameSchedule game) {
         return new GameScheduleResponse(
@@ -15,7 +16,8 @@ public record GameScheduleResponse(
                 game.getDate().toString(),
                 game.getHome().getTeamName(),
                 game.getAway().getTeamName(),
-                game.getStadium().getStadiumName()
+                game.getStadium().getStadiumName(),
+                game.getStadium().getStadiumId()
         );
     }
 }

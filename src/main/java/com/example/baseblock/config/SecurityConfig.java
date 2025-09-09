@@ -15,6 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @EnableMethodSecurity
 @RequiredArgsConstructor
@@ -56,11 +61,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**", "/login", "/swagger-ui/**", "/v3/api-docs/**", "/api/schedule/manual-test", "/api/schedule").permitAll() //Swagger 쓰려면 /swagger-ui/**, /v3/api-docs/**는 반드시 열어줘야 함
-                        .requestMatchers("/posts", "/posts/*", "/comments/*").permitAll()
+                        .requestMatchers("/user/**", "/login", "/swagger-ui/**", "/v3/api-docs/**", "/api/schedule/manual-test", "/api/schedule", "/api/schedule/reservable/**", "/api/seats", "/api/seats/**").permitAll() //Swagger 쓰려면 /swagger-ui/**, /v3/api-docs/**는 반드시 열어줘야 함
+                        .requestMatchers("/posts", "/posts/*", "/comments/*", "/api/payments/**").permitAll()
+                        .requestMatchers("/posts/new", "/comments/new", "/api/reservations").hasAnyRole("USER", "ADMIN", "MASTER")
                         .requestMatchers("/admin/posts/**").hasAnyRole("ADMIN", "MASTER")
                         .requestMatchers("/admin/users/**").hasRole("MASTER")
-                        .requestMatchers("/posts/new", "/comments/new").hasAnyRole("USER", "ADMIN", "MASTER")
                         .requestMatchers("/api/secure-test").authenticated()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
@@ -78,5 +83,18 @@ public class SecurityConfig {
     | `.anyRequest().authenticated()` | 나머지 요청은 인증 필요                          |
 
     */
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
 }

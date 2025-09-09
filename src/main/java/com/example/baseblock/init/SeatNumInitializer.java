@@ -24,7 +24,6 @@ public class SeatNumInitializer implements CommandLineRunner {
 
         for (SeatZone zone : seatZones) {
             String zoneName = zone.getZoneName();
-
             int seatCount;
             String prefix;
 
@@ -70,5 +69,4 @@ public class SeatNumInitializer implements CommandLineRunner {
             }
         }
     }
-
 }

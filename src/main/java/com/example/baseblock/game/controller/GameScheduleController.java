@@ -22,9 +22,18 @@ public class GameScheduleController {
 
     @GetMapping
     public ResponseEntity<List<GameScheduleResponse>> getSchedules(
-            @RequestParam("strat") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
+            @RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
             @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end
     ) {
+        List<GameScheduleResponse> schedules = gameScheduleQueryService.getSchedules(start, end);
+        return ResponseEntity.ok(schedules);
+    }
+
+    @GetMapping("/reservable")
+    public ResponseEntity<List<GameScheduleResponse>> getReservableSchedules() {
+        LocalDate start = LocalDate.now().plusDays(1);
+        LocalDate end = start.plusDays(6);
+
         List<GameScheduleResponse> schedules = gameScheduleQueryService.getSchedules(start, end);
         return ResponseEntity.ok(schedules);
     }
