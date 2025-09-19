@@ -27,7 +27,7 @@ public class SeatLockScheduler {
         // 🔧 네가 Query 메서드를 선호하면 커스텀 쿼리 추가해서 만료건만 읽어도 됨
         List<Reservation> all = reservationRepository.findAll();
         for (Reservation r : all) {
-            if (r.getStatus() == ReservationStatus.PENDING &&
+            if (r.getStatus() == ReservationStatus.RESERVED &&
                     r.getLockExpiresAt() != null &&
                     r.getLockExpiresAt().isBefore(now)) {
                 r.setStatus(ReservationStatus.EXPIRED);

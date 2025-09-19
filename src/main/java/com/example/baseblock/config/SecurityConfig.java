@@ -57,13 +57,13 @@ public class SecurityConfig {
         return http
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> {}) // CORS 설정은 따로 커스터마이징 가능
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정은 따로 커스터마이징 가능
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/user/**", "/login", "/swagger-ui/**", "/v3/api-docs/**", "/api/schedule/manual-test", "/api/schedule", "/api/schedule/reservable/**", "/api/seats", "/api/seats/**").permitAll() //Swagger 쓰려면 /swagger-ui/**, /v3/api-docs/**는 반드시 열어줘야 함
-                        .requestMatchers("/posts", "/posts/*", "/comments/*", "/api/payments/**").permitAll()
-                        .requestMatchers("/posts/new", "/comments/new", "/api/reservations").hasAnyRole("USER", "ADMIN", "MASTER")
+                        .requestMatchers("/posts", "/posts/*", "/comments/*", "/api/payments/**", "/payments/**", "/api/reservations").permitAll()
+                        .requestMatchers("/posts/new", "/comments/new").hasAnyRole("USER", "ADMIN", "MASTER")
                         .requestMatchers("/admin/posts/**").hasAnyRole("ADMIN", "MASTER")
                         .requestMatchers("/admin/users/**").hasRole("MASTER")
                         .requestMatchers("/api/secure-test").authenticated()

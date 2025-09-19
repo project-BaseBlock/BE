@@ -35,6 +35,9 @@ public class Reservation {
 
     private LocalDateTime reservedAt;
 
+    @Column(name = "lock_expires_at")
+    private LocalDateTime lockExpiresAt;
+
     public int getTotalAmount() {
         if (seatNum == null || seatNum.getSeatZone() == null) {
             throw new IllegalStateException("좌석 또는 구역 정보가 없습니다.");
