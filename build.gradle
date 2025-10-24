@@ -1,4 +1,7 @@
-	plugins {
+import groovy.json.JsonSlurper
+import groovy.json.JsonOutput
+
+plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.2'
 	id 'io.spring.dependency-management' version '1.1.7'
@@ -14,9 +17,8 @@ java {
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+	compileOnly {extendsFrom annotationProcessor}
+	codegen
 }
 
 repositories {
@@ -51,14 +53,82 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 처리용 (Jackson 사용 시)
 
 	//셀리니움. 망함. 쓰레기. 크보도 쓰레기
-	implementation "org.seleniumhq.selenium:selenium-java:4.21.0"
+	  implementation "org.seleniumhq.selenium:selenium-java:4.21.0"
 
 	//Jsoup이야~
 	//implementation 'org.jsoup:jsoup:1.17.2'
 
+	//Web3j
+	implementation "org.web3j:core:4.10.3"
+	// web3j 코드 생성기 (플러그인 대신 JavaExec로 실행)
+	codegen "org.web3j:codegen:4.10.3"
 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+	/* ──────────────────────────────────────────────────────────────────────────
+   ✅ web3j 코드 생성 설정
+   - Hardhat 산출물(TicketNFT.json)에서 ABI/BIN을 추출해 build/generated/abi/bin 저장
+   - 그 ABI/BIN으로 web3j가 자바 래퍼(com.example.baseblock.blockchain.contract 패키지) 생성
+   - generateContractWrappers 실행 시 자동으로 추출 → 생성 → 컴파일로 이어지게 연결
+   ────────────────────────────────────────────────────────────────────────── */
+
+def contractsRoot = "${rootDir}/../contracts"
+
+// 1) TicketNFT.json 복사
+def copyTicketJsonTask = tasks.register('copyTicketJson', Copy) {
+    from("${contractsRoot}/artifacts/contracts/TicketNFT.sol") {
+        include 'TicketNFT.json'
+    }
+    into("$buildDir/generated/raw")
+}
+
+// 2) JSON → ABI/BIN (Groovy 파서 사용: OS 독립)
+def extractAbiBinTask = tasks.register('extractAbiBin') {
+    dependsOn(copyTicketJsonTask)
+    doLast {
+        def rawDir = file("$buildDir/generated/raw")
+        def abiDir = file("$buildDir/generated/abi");  abiDir.mkdirs()
+        def binDir = file("$buildDir/generated/bin");  binDir.mkdirs()
+
+        def jsonFile = new File(rawDir, "TicketNFT.json")
+        if (!jsonFile.exists()) {
+            throw new GradleException("Hardhat 산출물이 없습니다: ${jsonFile.absolutePath}")
+        }
+
+        def parsed = new JsonSlurper().parse(jsonFile)
+        def abi = JsonOutput.toJson(parsed.abi)
+        def bytecode = parsed.bytecode?.toString() ?: ""
+        if (!bytecode.startsWith("0x")) bytecode = "0x" + bytecode
+
+        new File(abiDir, "TicketNFT.abi").text = abi
+        new File(binDir, "TicketNFT.bin").text = bytecode
+
+        println "[extractAbiBin] ABI/BIN 생성 완료:"
+        println " - ${new File(abiDir, 'TicketNFT.abi').absolutePath}"
+        println " - ${new File(binDir, 'TicketNFT.bin').absolutePath}"
+    }
+}
+
+// 3) web3j 코드 생성 (JavaExec)
+def generateTicketWrappersTask = tasks.register('generateTicketWrappers', JavaExec) {
+    dependsOn(extractAbiBinTask)     // ← 문자열 대신 태스크 핸들로 강참조
+    group = 'web3j'
+    description = 'Generate web3j contract wrappers from ABI/BIN'
+    classpath = configurations.codegen
+    mainClass = 'org.web3j.codegen.SolidityFunctionWrapperGenerator'
+    args = [
+            '-a', "$buildDir/generated/abi/TicketNFT.abi",
+            '-b', "$buildDir/generated/bin/TicketNFT.bin",
+            '-p', 'com.example.baseblock.blockchain.contract',
+            '-o', "$projectDir/src/main/java"
+    ]
+}
+
+// 4) 컴파일 전에 래퍼 생성하도록 연결
+tasks.named('compileJava') {
+    dependsOn(generateTicketWrappersTask)  // ← 여기서도 강참조 사용
 }

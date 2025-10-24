@@ -3,11 +3,14 @@ package com.example.baseblock.reservation.entity;
 import com.example.baseblock.common.ReservationStatus;
 import com.example.baseblock.game.entity.GameSchedule;
 import com.example.baseblock.stadium.entity.SeatNum;
+import com.example.baseblock.ticket.entity.Ticket;
 import com.example.baseblock.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,6 +40,10 @@ public class Reservation {
 
     @Column(name = "lock_expires_at")
     private LocalDateTime lockExpiresAt;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "reservation", fetch = FetchType.LAZY)
+    private List<Ticket> tickets = new ArrayList<>();
 
     public int getTotalAmount() {
         if (seatNum == null || seatNum.getSeatZone() == null) {

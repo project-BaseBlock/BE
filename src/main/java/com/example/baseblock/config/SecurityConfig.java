@@ -3,6 +3,7 @@ package com.example.baseblock.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -53,21 +54,60 @@ public class SecurityConfig {
 
     // 4. Security Filter Chain 설정 (Spring Security 6 방식임)
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(org.springframework.security.config.annotation.web.builders.HttpSecurity http) throws Exception {
         return http
-                .httpBasic(httpBasic -> httpBasic.disable())
-                .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정은 따로 커스터마이징 가능
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(b -> b.disable())
+                .csrf(c -> c.disable())
+                .cors(c -> c.configurationSource(corsConfigurationSource()))
+                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/user/**", "/login", "/swagger-ui/**", "/v3/api-docs/**", "/api/schedule/manual-test", "/api/schedule", "/api/schedule/reservable/**", "/api/seats", "/api/seats/**").permitAll() //Swagger 쓰려면 /swagger-ui/**, /v3/api-docs/**는 반드시 열어줘야 함
-                        .requestMatchers("/posts", "/posts/*", "/comments/*", "/api/payments/**", "/payments/**", "/api/reservations").permitAll()
-                        .requestMatchers("/posts/new", "/comments/new").hasAnyRole("USER", "ADMIN", "MASTER")
-                        .requestMatchers("/admin/posts/**").hasAnyRole("ADMIN", "MASTER")
+                        // ======================= 공개 엔드포인트 =======================
+                        // 로그인/회원가입/로그아웃
+                        .requestMatchers(HttpMethod.POST,
+                                "/user/login", "/login",
+                                "/user/register", "/user/signup",
+                                "/user/logout", "/logout"
+                        ).permitAll()
+
+                        // CORS 프리플라이트
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Swagger & 공개 API
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                // 일정/좌석(조회만)
+                                "/api/schedule", "/api/schedule/**",
+                                "/api/seats/**",
+                                // 결제/예약 공개 엔드포인트(프로젝트 정책에 맞게)
+                                "/api/payments/**", "/payments/**",
+                                "/api/reservations"
+                        ).permitAll()
+
+                        // ===== 게시판: 조회만 공개 =====
+                        .requestMatchers(HttpMethod.GET, "/posts", "/posts/**", "/comments/**").permitAll()
+                        // ===== 게시판: 작성/수정/삭제는 인증 필요 (세부 권한은 @PreAuthorize에서 처리) =====
+                        .requestMatchers(HttpMethod.POST,   "/posts/new").authenticated()
+                        .requestMatchers(HttpMethod.PUT,    "/posts/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/posts/**").authenticated()
+
+                        // ===== Ticket (보호) =====
+                        .requestMatchers(HttpMethod.GET,
+                                "/tickets/me",
+                                "/tickets/by-reservation/*",
+                                "/tickets/*"   // /tickets/{ticketId}
+                        ).hasAnyRole("USER","ADMIN","MASTER")
+                        .requestMatchers(HttpMethod.POST, "/tickets/*/claim")
+                        .hasAnyRole("USER","ADMIN","MASTER")
+
+                        // ===== Admin =====
+                        .requestMatchers("/admin/posts/**").hasAnyRole("ADMIN","MASTER")
                         .requestMatchers("/admin/users/**").hasRole("MASTER")
-                        .requestMatchers("/api/secure-test").authenticated()
-                        .anyRequest().authenticated())
+
+                        // 그 외는 인증 필요
+                        .anyRequest().authenticated()
+                )
+                // JWT 필터
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
                         UsernamePasswordAuthenticationFilter.class)
                 .build();

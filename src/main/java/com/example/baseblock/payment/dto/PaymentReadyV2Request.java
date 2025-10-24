@@ -9,10 +9,11 @@ import java.util.List;
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class PaymentReadyV2Request {
 
+    /*
     @NotNull
     private Long reservationId;
 
-    /*
+
     @NotNull
     private Long stadiumId;     // 예: 잠실 id
     @NotNull
@@ -20,5 +21,13 @@ public class PaymentReadyV2Request {
     @NotEmpty
     private List<String> seatNumbers; // 예: ["g001","g002"]
     */
+
+    @NotNull
+    private Long reservationId;     // 필수: readyPaymentV2에서 사용
+
+    // 서버에서 유효성 직접 체크하므로 Bean Validation은 생략
+    private Long stadiumId;
+    private String zoneName;
+    private List<String> seatNumbers;
 
 }

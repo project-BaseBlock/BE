@@ -5,7 +5,6 @@ import com.example.baseblock.board.dto.PostResponse;
 import com.example.baseblock.board.dto.PostUpdateRequest;
 import com.example.baseblock.board.service.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,29 +20,31 @@ public class PostController {
 
     private final PostService postService;
 
-    //게시글 조회
+    // 목록 (공개)
     @GetMapping
     public List<PostResponse> getAllPosts() {
         return postService.findAll();
     }
-    //게시글 검색
+
+    // 단건 (공개)
     @GetMapping("/{id}")
     public PostResponse getPostById(@PathVariable Long id) {
         return postService.findById(id);
     }
 
-    //게시글 작성
+    // 작성 (USER/ADMIN/MASTER)
     @PostMapping("/new")
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('MASTER')")
-    public ResponseEntity<Void> createPost(@RequestBody PostCreateRequest request, Authentication authentication) {
-        String email = authentication.getName(); // 로그인한 사용자 이메일
+    @PreAuthorize("hasAnyRole('USER','ADMIN','MASTER')")
+    public ResponseEntity<Void> createPost(@RequestBody PostCreateRequest request,
+                                           Authentication authentication) {
+        String email = authentication.getName();
         postService.createPost(request, email);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    //게시글 수정
+    // 수정: 작성자 or ADMIN/MASTER
     @PutMapping("/{postId}")
-    @PreAuthorize("@postService.isPostAuthor(#postId, authentication.name)")
+    @PreAuthorize("hasAnyRole('ADMIN','MASTER') or @postService.isPostAuthor(#postId, authentication.name)")
     public ResponseEntity<Void> updatePost(@PathVariable Long postId,
                                            @RequestBody PostUpdateRequest request,
                                            Authentication authentication) {
@@ -52,13 +53,13 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
-    //게시글 삭제
+    // 삭제: 작성자 or ADMIN/MASTER (하드딜리트)
     @DeleteMapping("/{postId}")
-    @PreAuthorize("@postService.isPostAuthor(#postId, authentication.name)")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId, Authentication authentication) {
-        String email = authentication.getName(); // 현재 로그인한 유저
+    @PreAuthorize("hasAnyRole('ADMIN','MASTER') or @postService.isPostAuthor(#postId, authentication.name)")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId,
+                                           Authentication authentication) {
+        String email = authentication.getName();
         postService.deletePost(postId, email);
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -8,4 +8,6 @@ public class PaymentVerifyRequest {
     private String impUid;
     private String merchantUid;
     private Long reservationId;
+
+    private boolean mock;
 }

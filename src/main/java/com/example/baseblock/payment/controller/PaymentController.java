@@ -34,7 +34,7 @@ public class PaymentController {
     @Operation(summary = "결제 검증 (impUid/merchantUid/금액 비교)")
     @PostMapping("/verify")
     public PaymentResultResponse verify(@RequestBody PaymentVerifyRequest req) {
-        return paymentService.verifyAndComplete(req);
+        return paymentService.verifyAndComplete(req); // 실/목 공용
     }
 
     @PostMapping("/webhook")

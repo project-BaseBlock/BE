@@ -41,4 +41,8 @@ public class GameSchedule {
 
     private Integer awayScore;
 
+    public Long getId() {
+        return this.gameId;
+    }
+
 }

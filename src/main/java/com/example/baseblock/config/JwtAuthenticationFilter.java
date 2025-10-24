@@ -19,34 +19,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 화이트리스트: 인증 없이 접근 허용(permitAll)되는 경로는 필터 스킵
-    // ※ 보호가 필요한 경로(예: /posts/new, /comments/new, /api/reservations)는 넣지 않는다!
-    private static final List<String> WHITELIST = List.of(
-            "/payments/**",
-            "/api/payments/**",
-            "/swagger-ui/**",
-            "/v3/api-docs/**",
-            "/actuator/**",
-            "/user/**",
-            "/login",
-            "/posts", "/posts/*",
-            "/comments/*",
-            "/api/schedule/**",
-            "/api/seats/**"
-    );
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        // CORS preflight만 스킵
+        return "OPTIONS".equalsIgnoreCase(request.getMethod());
+    }
 
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) {
-        // CORS preflight(OPTIONS)는 항상 스킵
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            return true;
-        }
-        String uri = request.getRequestURI();
-        // 화이트리스트 경로면 스킵
-        return WHITELIST.stream().anyMatch(p -> pathMatcher.match(p, uri));
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

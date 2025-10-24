@@ -2,14 +2,18 @@ package com.example.baseblock.payment.entity;
 
 import com.example.baseblock.common.PaymentStatus;
 import com.example.baseblock.reservation.entity.Reservation;
+import com.example.baseblock.ticket.entity.Ticket;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor @AllArgsConstructor @Builder
+@NoArgsConstructor @AllArgsConstructor
+@Builder
 @Table(
         name = "payment",
         uniqueConstraints = {
@@ -44,6 +48,10 @@ public class Payment {
 
     private LocalDateTime paidAt;
     private LocalDateTime createdAt;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "payment", fetch = FetchType.LAZY)
+    private List<Ticket> tickets = new ArrayList<>();
 
     @PrePersist
     public void onCreate() {
