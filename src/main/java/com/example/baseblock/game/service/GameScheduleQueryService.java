@@ -1,6 +1,6 @@
 package com.example.baseblock.game.service;
 
-import com.example.baseblock.game.dto.GameScheduleResponse;
+import com.example.baseblock.game.entity.GameSchedule;
 import com.example.baseblock.game.repository.GameScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,7 @@ public class GameScheduleQueryService {
 
     private final GameScheduleRepository gameScheduleRepository;
 
-    public List<GameScheduleResponse> getSchedules(LocalDate start, LocalDate end) {
-        return gameScheduleRepository.findByDateBetween(start, end).stream()
-                .map(GameScheduleResponse::fromEntity)
-                .toList();
+    public List<GameSchedule> getByDateRange(LocalDate start, LocalDate end) {
+        return gameScheduleRepository.findByDateBetweenOrderByDateAsc(start, end);
     }
 }

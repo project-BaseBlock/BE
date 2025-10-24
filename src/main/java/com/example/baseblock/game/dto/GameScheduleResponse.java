@@ -1,23 +1,37 @@
 package com.example.baseblock.game.dto;
 
 import com.example.baseblock.game.entity.GameSchedule;
+import lombok.Builder;
+import lombok.Getter;
 
-public record GameScheduleResponse(
-        Long id,
-        String date,
-        String homeTeam,
-        String awayTeam,
-        String stadiumName,
-        Long stadiumId
-) {
-    public static GameScheduleResponse fromEntity(GameSchedule game) {
-        return new GameScheduleResponse(
-                game.getGameId(),
-                game.getDate().toString(),
-                game.getHome().getTeamName(),
-                game.getAway().getTeamName(),
-                game.getStadium().getStadiumName(),
-                game.getStadium().getStadiumId()
-        );
+import java.time.LocalDate;
+
+@Getter
+@Builder
+public class GameScheduleResponse {
+    private Long gameId;
+    private LocalDate date;
+    private String homeTeam;
+    private String awayTeam;
+
+    // ✅ 추가
+    private Long stadiumId;
+
+    private String stadiumName;
+    private Integer homeScore; // null 가능
+    private Integer awayScore; // null 가능
+
+    public static GameScheduleResponse fromEntity(GameSchedule gs) {
+        return GameScheduleResponse.builder()
+                .gameId(gs.getGameId())
+                .date(gs.getDate())
+                .homeTeam(gs.getHome().getTeamName())
+                .awayTeam(gs.getAway().getTeamName())
+                // ✅ 추가 (여기가 핵심)
+                .stadiumId(gs.getStadium().getStadiumId())
+                .stadiumName(gs.getStadium().getStadiumName())
+                .homeScore(gs.getHomeScore())
+                .awayScore(gs.getAwayScore())
+                .build();
     }
 }
