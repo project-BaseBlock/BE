@@ -6,12 +6,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import java.time.LocalDateTime;
 
-
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class TicketResponse {
+
     @Schema(description = "티켓 PK")
     private Long ticketId;
 
@@ -37,19 +38,51 @@ public class TicketResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime issuedAt;
 
+    /* ✅ [추가] 경기 정보 필드 */
+    @Schema(description = "홈팀 이름")
+    private String homeTeam;
 
+    @Schema(description = "원정팀 이름")
+    private String awayTeam;
+
+    @Schema(description = "경기 제목 (홈 vs 원정)")
+    private String gameTitle;
+
+    /* ✅ fromEntity() 수정 */
     public static TicketResponse fromEntity(Ticket t) {
         Long gameId = (t.getGameSchedule() != null) ? t.getGameSchedule().getGameId() : null;
         String seatNo = (t.getSeatNum() != null) ? t.getSeatNum().getNumber() : null;
 
+        String homeTeam = null;
+        String awayTeam = null;
+        String gameTitle = null;
+
+        // ✅ GameSchedule에서 home / away 접근
+        if (t.getGameSchedule() != null) {
+            if (t.getGameSchedule().getHome() != null) {
+                homeTeam = t.getGameSchedule().getHome().getTeamName();
+            }
+            if (t.getGameSchedule().getAway() != null) {
+                awayTeam = t.getGameSchedule().getAway().getTeamName();
+            }
+            if (homeTeam != null && awayTeam != null) {
+                gameTitle = homeTeam + " vs " + awayTeam;
+            }
+        }
+
         return TicketResponse.builder()
                 .ticketId(t.getId())
                 .reservationId(t.getReservation() != null ? t.getReservation().getId() : null)
+                .paymentId(t.getPayment() != null ? t.getPayment().getId() : null)
                 .gameId(gameId)
                 .seatNo(seatNo)
                 .tokenId(t.getTokenId())
                 .txHash(t.getTxHash())
                 .issuedAt(t.getIssuedAt())
+                /* ✅ 추가된 필드 매핑 */
+                .homeTeam(homeTeam)
+                .awayTeam(awayTeam)
+                .gameTitle(gameTitle)
                 .build();
     }
 }
