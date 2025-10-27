@@ -44,9 +44,21 @@ public class KboCrawler {
     public List<GameSchedule> crawlMonth(int month) {
         List<GameSchedule> result = new ArrayList<>();
 
-        ChromeOptions options = new ChromeOptions();
+        //ChromeOptions options = new ChromeOptions();
         // options.addArguments("--headless=new"); // 필요 시 활성화
+        //WebDriver driver = new ChromeDriver(options);
+        System.setProperty("webdriver.chrome.driver", "/usr/bin/chromedriver");
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless"); // EC2용 headless 모드
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
+        options.setBinary("/usr/bin/google-chrome");
+
         WebDriver driver = new ChromeDriver(options);
+
 
         try {
             driver.get(URL);
