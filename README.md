@@ -56,14 +56,14 @@
 <img src="https://img.shields.io/badge/AWS%20EC2-FF9900?style=flat&logo=amazonec2&logoColor=white"/>
 <img src="https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white"/>
 <img src="https://img.shields.io/badge/systemd-222222?style=flat&logo=linux&logoColor=white"/>
-<img src="https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=jenkins&logoColor=white"/>
 <img src="https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white"/>
 </p>
 
 ---
 
-## 🧩 시스템 아키텍처
-(아키텍처 다이어그램 이미지 삽입 위치)
+## 🧩 시스템 아키텍처 및 ERD
+<img width="992" height="824" alt="스크린샷 2025-10-25 212059" src="https://github.com/user-attachments/assets/32ae10cb-3156-4fd1-97b0-66ef1b01bfc5" />
+<img width="1536" height="1024" alt="ChatGPT Image 2025년 11월 14일 오후 06_43_48" src="https://github.com/user-attachments/assets/a2ec8d72-5911-46f8-91f8-0a7c52779fba" />
 
 ---
 
@@ -73,23 +73,29 @@
 | **예매** | 경기 일정 조회 후 좌석 선택 및 예매 생성 |
 | **결제** | Iamport 연동 결제 및 검증 |
 | **NFT 발급** | 결제 완료 후 TicketNFT.sol 민팅 |
-| **게시판** | 사용자 커뮤니티 기능 및 댓글 작성 |
 | **관리자 페이지** | 글 관리, 계정 권한 변경 |
-| **트러블슈팅** | 환경변수 오류, 403 접근 거부 등 주요 이슈 기록 |
 
 ---
+## 💡 기능 상세 설
 
-## 🚀 실행 방법 (Getting Started)
-```bash
-# 백엔드
-./gradlew build
-scp build/libs/baseblock.jar ubuntu@<EC2_IP>:/home/ubuntu/app/
-ssh ubuntu@<EC2_IP>
-sudo systemctl restart baseblock.service
+**예매** 경기 일정 조회 후 좌석 선택 및 예매 생성
+<img width="909" height="943" alt="스크린샷 2025-10-25 213223" src="https://github.com/user-attachments/assets/53f95602-0e5e-4964-8e7c-366a0ca6968e" />
+<img width="956" height="946" alt="스크린샷 2025-10-25 213308" src="https://github.com/user-attachments/assets/33291e0a-480c-4a05-8bc5-7a6a85d459c4" />
+<img width="932" height="947" alt="스크린샷 2025-10-25 213341" src="https://github.com/user-attachments/assets/a3813242-1587-41ea-a28f-5ae65de64f70" />
 
-# 프론트엔드
-npm install
-npm run dev
+
+**결제 및 NFT 발급** Iamport 연동 결제 및 검증, 결제 완료 후 TicketNFT.sol 민팅
+<img width="985" height="942" alt="스크린샷 2025-10-25 213352" src="https://github.com/user-attachments/assets/cd5ae670-6acd-443d-95c9-810e5f4e7558" />
+<img width="939" height="943" alt="스크린샷 2025-10-25 213406" src="https://github.com/user-attachments/assets/ee64a56b-72af-482c-873a-39392db8f2ce" />
+<img width="931" height="940" alt="스크린샷 2025-10-25 213436" src="https://github.com/user-attachments/assets/f8bac697-f9fd-43eb-95fb-8b4b106d8598" />
+<img width="1013" height="944" alt="스크린샷 2025-10-25 213446" src="https://github.com/user-attachments/assets/6c9d1f99-ffaa-4626-b51e-6079d66b4381" />
+
+**관리자 페이지** 글 관리, 계정 권한 변경 
+<img width="889" height="943" alt="스크린샷 2025-10-25 213521" src="https://github.com/user-attachments/assets/13860d25-2348-425a-a2d8-74612b02d97c" />
+<img width="905" height="941" alt="스크린샷 2025-10-25 213557" src="https://github.com/user-attachments/assets/b303738c-05f3-45eb-a2e1-2bcbb8714907" />
+
+
+---
 
 🧠 트러블슈팅 사례
 
