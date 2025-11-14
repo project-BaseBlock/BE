@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="800" alt="Logo" src="https://github.com/user-attachments/assets/ad2443eb-89cb-4312-bd66-41a352da7252" />
+  <img width="600" alt="Logo" src="https://github.com/user-attachments/assets/ad2443eb-89cb-4312-bd66-41a352da7252" />
 </p>
 
 # ⚾ BaseBlock
