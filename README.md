@@ -1,4 +1,4 @@
-<h1 align="center">⚾ BaseBlock</h1>
+# ⚾ BaseBlock
 
 <p align="center">
 블록체인 기반 야구 경기 예매·결제·NFT 티켓 발급 플랫폼  
@@ -9,17 +9,17 @@
 ---
 
 ## 🧱 프로젝트 개요
-> **BaseBlock**은 야구 예매 시스템에 **블록체인(NFT)** 기술을 접목하여  
-> 경기 예매, 결제, 발권의 투명성과 소유권을 강화한 **웹 통합 플랫폼**입니다.
+> **BaseBlock**은 야구 예매 시스템에 **블록체인(NFT)** 기술을 결합하여  
+> 예매·결제·발권의 투명성과 소유권을 강화한 통합 웹 서비스입니다.
 
-- **핵심 목표:** 실사용 가능한 NFT 예매 시스템 구현  
-- **차별점:** 결제 이후 자동 NFT 발급, 마이페이지 내 소유권 확인  
+- **핵심 목표:** 실사용 가능한 NFT 기반 티켓 시스템 구현  
+- **차별점:** 결제 후 TicketNFT 자동 발급  
 - **주요 기능:**
-  - 경기 일정 조회 및 예매
-  - Iamport 결제 및 검증
-  - Ethereum NFT 발급 (TicketNFT.sol)
-  - 마이페이지 티켓 관리
-  - 관리자 페이지 (글/계정 권한 관리)
+  - 경기 일정 조회 및 예매  
+  - Iamport 결제 및 검증  
+  - Ethereum NFT 발급 (TicketNFT.sol)  
+  - 마이페이지 티켓 관리  
+  - 관리자 페이지 제공  
 
 ---
 
@@ -62,62 +62,72 @@
 ---
 
 ## 🧩 시스템 아키텍처 및 ERD
-<img width="992" height="824" alt="스크린샷 2025-10-25 212059" src="https://github.com/user-attachments/assets/32ae10cb-3156-4fd1-97b0-66ef1b01bfc5" />
-<img width="1536" height="1024" alt="ChatGPT Image 2025년 11월 14일 오후 06_43_48" src="https://github.com/user-attachments/assets/a2ec8d72-5911-46f8-91f8-0a7c52779fba" />
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/32ae10cb-3156-4fd1-97b0-66ef1b01bfc5" width="48%">
+  <img src="https://github.com/user-attachments/assets/a2ec8d72-5911-46f8-91f8-0a7c52779fba" width="48%">
+</p>
 
 ---
 
 ## 💡 주요 기능 요약
 | 기능 | 설명 |
 |------|------|
-| **예매** | 경기 일정 조회 후 좌석 선택 및 예매 생성 |
-| **결제** | Iamport 연동 결제 및 검증 |
+| **예매** | 경기 일정 조회 후 좌석 선택 → 예약 생성 |
+| **결제** | Iamport 결제 및 검증 |
 | **NFT 발급** | 결제 완료 후 TicketNFT.sol 민팅 |
-| **관리자 페이지** | 글 관리, 계정 권한 변경 |
-
----
-## 💡 기능 상세 설
-
-**예매** 경기 일정 조회 후 좌석 선택 및 예매 생성
-<img width="909" height="943" alt="스크린샷 2025-10-25 213223" src="https://github.com/user-attachments/assets/53f95602-0e5e-4964-8e7c-366a0ca6968e" />
-<img width="956" height="946" alt="스크린샷 2025-10-25 213308" src="https://github.com/user-attachments/assets/33291e0a-480c-4a05-8bc5-7a6a85d459c4" />
-<img width="932" height="947" alt="스크린샷 2025-10-25 213341" src="https://github.com/user-attachments/assets/a3813242-1587-41ea-a28f-5ae65de64f70" />
-
-
-**결제 및 NFT 발급** Iamport 연동 결제 및 검증, 결제 완료 후 TicketNFT.sol 민팅
-<img width="985" height="942" alt="스크린샷 2025-10-25 213352" src="https://github.com/user-attachments/assets/cd5ae670-6acd-443d-95c9-810e5f4e7558" />
-<img width="939" height="943" alt="스크린샷 2025-10-25 213406" src="https://github.com/user-attachments/assets/ee64a56b-72af-482c-873a-39392db8f2ce" />
-<img width="931" height="940" alt="스크린샷 2025-10-25 213436" src="https://github.com/user-attachments/assets/f8bac697-f9fd-43eb-95fb-8b4b106d8598" />
-<img width="1013" height="944" alt="스크린샷 2025-10-25 213446" src="https://github.com/user-attachments/assets/6c9d1f99-ffaa-4626-b51e-6079d66b4381" />
-
-**관리자 페이지** 글 관리, 계정 권한 변경 
-<img width="889" height="943" alt="스크린샷 2025-10-25 213521" src="https://github.com/user-attachments/assets/13860d25-2348-425a-a2d8-74612b02d97c" />
-<img width="905" height="941" alt="스크린샷 2025-10-25 213557" src="https://github.com/user-attachments/assets/b303738c-05f3-45eb-a2e1-2bcbb8714907" />
-
+| **관리자 페이지** | 글 관리, 계정 권한 변경 기능 |
 
 ---
 
-🧠 트러블슈팅 사례
+## 💡 기능 상세 설명
 
-1️⃣ NFT 미발급 오류
+### **1) 예매 기능 — 경기 일정 조회 & 좌석 선택**
 
-원인: ticket.contract-address 오입력으로 Bean 생성 실패
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/53f95602-0e5e-4964-8e7c-366a0ca6968e" width="32%">
+  <img src="https://github.com/user-attachments/assets/33291e0a-480c-4a05-8bc5-7a6a85d459c4" width="32%">
+  <img src="https://github.com/user-attachments/assets/a3813242-1587-41ea-a28f-5ae65de64f70" width="32%">
+</p>
 
-조치: 환경변수 수정 후 재배포 → 정상 txHash 반환
+---
 
-예방: Jenkins 환경변수 검증 스크립트 추가
+### **2) 결제 및 NFT 발급 — Iamport 결제 → TicketNFT.sol 민팅**
 
-2️⃣ 403 Forbidden 오류
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cd5ae670-6acd-443d-95c9-810e5f4e7558" width="24%">
+  <img src="https://github.com/user-attachments/assets/ee64a56b-72af-482c-873a-39392db8f2ce" width="24%">
+  <img src="https://github.com/user-attachments/assets/f8bac697-f9fd-43eb-95fb-8b4b106d8598" width="24%">
+  <img src="https://github.com/user-attachments/assets/6c9d1f99-ffaa-4626-b51e-6079d66b4381" width="24%">
+</p>
 
-원인: React 요청 경로(/api/user/info)와 Spring Security 경로(/user/info) 불일치
+---
 
-조치: 경로 수정 및 Swagger 문서 업데이트
+### **3) 관리자 페이지 — 글/계정 권한 관리**
 
-교훈: 문서화의 중요성, 협업 시 변경 내역 공유 체계 확립
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/13860d25-2348-425a-a2d8-74612b02d97c" width="48%">
+  <img src="https://github.com/user-attachments/assets/b303738c-05f3-45eb-a2e1-2bcbb8714907" width="48%">
+</p>
 
-🧭 프로젝트 회고
+---
 
-“결제, NFT 발급, 인증 등 다양한 기술 스택이 연결된 만큼
-작은 설정 오류 하나가 전체 서비스 장애로 이어질 수 있다는 점을 직접 경험했습니다.
-이를 계기로 트러블슈팅 문서화와 Runbook 관리의 중요성을 깨달았고,
-협업 시 명확한 기록과 전달 체계가 품질을 좌우한다는 것을 체감했습니다.”
+## 🧠 트러블슈팅 사례
+
+### **1️⃣ NFT 미발급 오류**
+- 원인: 잘못된 `ticket.contract-address`로 Web3Config Bean 생성 실패  
+- 조치: EC2 환경변수 수정 후 재배포 → 정상 `txHash` 반환  
+- 교훈: 배포 시 환경변수 검증 루틴 필요
+
+### **2️⃣ 403 Forbidden 오류**
+- 원인: React 요청 경로(`/api/user/info`)와 Spring Security 경로(`/user/info`) 불일치  
+- 조치: API 엔드포인트 통일 및 Swagger 문서 업데이트  
+- 교훈: 문서화 부족이 협업 장애로 이어짐
+
+---
+
+## 🧭 프로젝트 회고
+> **결제, NFT 발급, 인증 등 다양한 기술 스택이 유기적으로 연결되어 있어  
+작은 설정 하나가 전체 장애로 이어질 수 있음을 경험했습니다.**  
+이를 계기로 **트러블슈팅 문서화**와 **Runbook 관리의 중요성**을 절실히 깨달았고,  
+협업에서는 **명확한 기록과 변경사항 공유가 품질을 좌우한다는 것**을 체감했습니다.
