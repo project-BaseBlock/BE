@@ -55,7 +55,7 @@ public class KboCrawler {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
         options.addArguments("--remote-allow-origins=*");
-        options.setBinary("/usr/bin/google-chrome");
+        options.setBinary("/usr/bin/google-chrome-stable");
 
         WebDriver driver = new ChromeDriver(options);
 

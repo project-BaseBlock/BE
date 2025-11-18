@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    // (하드딜리트면 전체 조회로 충분)
+    // (하드딜리트면 전체 조회)
     List<Post> findAll();
 
     // 닉네임으로 게시글 검색

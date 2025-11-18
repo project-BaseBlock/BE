@@ -14,7 +14,7 @@ public class GameScheduleResponse {
     private String homeTeam;
     private String awayTeam;
 
-    // ✅ 추가
+    // 추가
     private Long stadiumId;
 
     private String stadiumName;
@@ -27,7 +27,7 @@ public class GameScheduleResponse {
                 .date(gs.getDate())
                 .homeTeam(gs.getHome().getTeamName())
                 .awayTeam(gs.getAway().getTeamName())
-                // ✅ 추가 (여기가 핵심)
+                // 추가
                 .stadiumId(gs.getStadium().getStadiumId())
                 .stadiumName(gs.getStadium().getStadiumName())
                 .homeScore(gs.getHomeScore())

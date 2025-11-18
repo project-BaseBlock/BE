@@ -5,8 +5,10 @@ import com.example.baseblock.stadium.entity.SeatZone;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,4 +39,11 @@ public interface SeatNumRepository extends JpaRepository<SeatNum, Long> {
     );
 
     int countBySeatZoneAndNumberIn(SeatZone seatZone, List<String> numbers);
+
+    // [Demo] stadiumId 기준으로 해당 구장의 모든 좌석 활성화
+    @Modifying
+    @Transactional
+    @Query("UPDATE SeatNum s SET s.isActive = true WHERE s.seatZone.stadium.stadiumId = :stadiumId")
+    void resetSeatsByStadium(@Param("stadiumId") Long stadiumId);
+
 }

@@ -34,7 +34,7 @@ public class ReservationService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
 
-        // ✅ [수정] 비관적 락(Pessimistic Lock)을 사용하여 좌석을 조회합니다.
+        // 비관적 락(Pessimistic Lock)을 사용하여 좌석을 조회합니다.
         List<SeatNum> seats = seatNumRepository.findForUpdateByZoneAndStadiumAndNumbers(
                 request.getZoneName(),
                 request.getStadiumId(),
@@ -49,7 +49,7 @@ public class ReservationService {
             if (!seat.isActive()) {
                 throw new IllegalStateException("이미 예약된 좌석이 포함되어 있습니다: " + seat.getNumber());
             }
-            // ✅ 예약 완료 후 좌석 상태를 비활성화(isActive = false)로 변경합니다.
+            // 예약 완료 후 좌석 상태를 비활성화(isActive = false)로 변경합니다.
             seat.setActive(false);
         }
 
@@ -61,7 +61,7 @@ public class ReservationService {
                                 .gameSchedule(game)
                                 .seatNum(seat)
                                 .status(ReservationStatus.RESERVED)
-                                .reservedAt(LocalDateTime.now()) // ✅ 예약 시간 추가
+                                .reservedAt(LocalDateTime.now()) // 예약 시간 추가
                                 .build())
                         .toList()
         );

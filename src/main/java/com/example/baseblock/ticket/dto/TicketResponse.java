@@ -38,7 +38,7 @@ public class TicketResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime issuedAt;
 
-    /* ✅ [추가] 경기 정보 필드 */
+    /* [추가] 경기 정보 필드 */
     @Schema(description = "홈팀 이름")
     private String homeTeam;
 
@@ -48,7 +48,7 @@ public class TicketResponse {
     @Schema(description = "경기 제목 (홈 vs 원정)")
     private String gameTitle;
 
-    /* ✅ fromEntity() 수정 */
+    // fromEntity() 수정
     public static TicketResponse fromEntity(Ticket t) {
         Long gameId = (t.getGameSchedule() != null) ? t.getGameSchedule().getGameId() : null;
         String seatNo = (t.getSeatNum() != null) ? t.getSeatNum().getNumber() : null;
@@ -57,7 +57,7 @@ public class TicketResponse {
         String awayTeam = null;
         String gameTitle = null;
 
-        // ✅ GameSchedule에서 home / away 접근
+        // GameSchedule에서 home / away 접근
         if (t.getGameSchedule() != null) {
             if (t.getGameSchedule().getHome() != null) {
                 homeTeam = t.getGameSchedule().getHome().getTeamName();
@@ -79,7 +79,7 @@ public class TicketResponse {
                 .tokenId(t.getTokenId())
                 .txHash(t.getTxHash())
                 .issuedAt(t.getIssuedAt())
-                /* ✅ 추가된 필드 매핑 */
+                /* 추가된 필드 매핑 */
                 .homeTeam(homeTeam)
                 .awayTeam(awayTeam)
                 .gameTitle(gameTitle)

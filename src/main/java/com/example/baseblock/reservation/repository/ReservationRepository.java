@@ -17,7 +17,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     Optional<Reservation> findTopByUserOrderByIdDesc(User user);
 
-    // 🔐 /payments/ready에서 동시요청 방지용
+    // /payments/ready에서 동시요청 방지용
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select r from Reservation r where r.id = :id")
     Optional<Reservation> findByIdForUpdate(@Param("id") Long id);

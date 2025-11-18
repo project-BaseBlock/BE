@@ -30,7 +30,7 @@ public class GameScheduleService {
             String stadiumName = dto.getStadiumName();
 
             if (homeName.equalsIgnoreCase("vs") || awayName.equalsIgnoreCase("vs") || homeName.isBlank() || awayName.isBlank()) {
-                log.warn("❌ 잘못된 팀 이름 → home: {}, away: {}", homeName, awayName);
+                log.warn("XX 잘못된 팀 이름 → home: {}, away: {}", homeName, awayName);
                 continue;
             }
 
@@ -42,14 +42,14 @@ public class GameScheduleService {
                     .orElse(null);
 
             if (home == null || away == null || stadium == null) {
-                log.warn("❌ 팀 또는 구장 정보 없음 → home: {}, away: {}, stadium: {}", homeName, awayName, stadiumName);
+                log.warn("XX 팀 또는 구장 정보 없음 → home: {}, away: {}, stadium: {}", homeName, awayName, stadiumName);
                 continue; // 저장하지 않고 넘어감
             }
 
             com.example.baseblock.game.entity.GameSchedule schedule = gameScheduleRepository
                     .findByDateAndHome_IdAndAway_Id(dto.getDate(), home.getId(), away.getId())
                     .orElseGet(() -> {
-                        log.info("➕ 새로운 경기 일정 생성: {} vs {} on {}", homeName, awayName, dto.getDate());
+                        log.info("++ 새로운 경기 일정 생성: {} vs {} on {}", homeName, awayName, dto.getDate());
                         return com.example.baseblock.game.entity.GameSchedule.builder()
                                 .home(home)
                                 .away(away)

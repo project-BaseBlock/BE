@@ -25,7 +25,7 @@ public class PaymentController {
 
     @PostMapping("/ready/v2")
     public PaymentReadyResponse readyV2(@RequestBody @Valid PaymentReadyV2Request req) {
-        // ✅ 과거 호환 엔드포인트: 넘어온 메타(stadiumId/zoneName/seatNumbers)는 이제 무시
+        //과거 호환 엔드포인트: 넘어온 메타(stadiumId/zoneName/seatNumbers)는 이제 무시
         log.info("[API] POST /payments/ready/v2 rid={}, (stadiumId/zone/seats 무시)",
                 req.getReservationId());
         return paymentService.readyPaymentV2(req); // 내부에서 readyPayment로 위임

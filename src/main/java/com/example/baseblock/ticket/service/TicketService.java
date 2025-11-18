@@ -25,7 +25,7 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
-    private final NftService nftService; // ✅ 추가
+    private final NftService nftService;
 
     /** 현재 로그인 사용자 조회 (email 기반 가정) */
     private User currentUser() {
@@ -90,7 +90,7 @@ public class TicketService {
     }
 
     // =======================
-    // ✅ [NEW] 보관지갑 → 사용자 지갑 클레임(이관)
+    // [추가]보관지갑 → 사용자 지갑 클레임(이관)
     // =======================
     @Transactional
     public TicketResponse claimMyTicket(Long ticketId) {

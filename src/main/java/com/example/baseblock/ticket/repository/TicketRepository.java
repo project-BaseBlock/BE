@@ -29,7 +29,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     // 결제 직후 조회(예약ID + 사용자로 최신 1건)
     Optional<Ticket> findFirstByReservation_IdAndUser_IdOrderByIdDesc(Long reservationId, Long userId);
 
-    // ✅ [ADDED] 클레임/정합 처리를 위한 비관적 락 조회
+    // 클레임/정합 처리를 위한 비관적 락 조회
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select t from Ticket t where t.id = :id")
     Optional<Ticket> findByIdForUpdate(@Param("id") Long id);

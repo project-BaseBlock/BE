@@ -17,7 +17,7 @@ public class GameScheduleSyncService {
 
     // 수동 테스트용 메서드: 전체 경기 크롤링
     public void manualTest() {
-        // ✅ [수정] crawler.crawlAllMonthsUpToOctober() 대신 3월부터 크롤링하는 메서드를 호출
+        // crawler.crawlAllMonthsUpToOctober() 대신 3월부터 크롤링하는 메서드를 호출
         List<GameSchedule> list = crawler.crawlAllMonthsFromMarchToOctober();
         gameScheduleService.saveOrUpdate(list);
         System.out.println("✅ 수동 3월~10월 크롤링 완료: " + list.size() + "개 저장됨");

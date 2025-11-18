@@ -28,7 +28,7 @@ public class NftService {
 
     private final Web3j web3j;
 
-    @Qualifier("web3TransactionManager")         // ✅ 변경된 이름으로 주입
+    @Qualifier("web3TransactionManager")         // 변경된 이름으로 주입
     private final org.web3j.tx.TransactionManager transactionManager;     // RawTransactionManager (Web3Config)
 
     private final ContractGasProvider gasProvider;  // DefaultGasProvider or EIP-1559 provider

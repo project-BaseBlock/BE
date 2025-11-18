@@ -70,7 +70,7 @@ tasks.named('test') {
 }
 
 	/* ──────────────────────────────────────────────────────────────────────────
-   ✅ web3j 코드 생성 설정
+   web3j 코드 생성 설정
    - Hardhat 산출물(TicketNFT.json)에서 ABI/BIN을 추출해 build/generated/abi/bin 저장
    - 그 ABI/BIN으로 web3j가 자바 래퍼(com.example.baseblock.blockchain.contract 패키지) 생성
    - generateContractWrappers 실행 시 자동으로 추출 → 생성 → 컴파일로 이어지게 연결

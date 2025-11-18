@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/posts")
+@RequestMapping("/api/admin/posts")
 public class AdminPostController {
 
     private final AdminPostService adminPostService;

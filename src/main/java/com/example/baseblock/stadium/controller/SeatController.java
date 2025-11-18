@@ -18,8 +18,6 @@ public class SeatController {
 
     /**
      * zone / zoneName 둘 다 허용.
-     * - 프론트는 zoneName=그린 같은 한글 사용
-     * - 레거시는 zone=green 같은 영문 사용
      * 컨트롤러에서 한글로 정규화하여 서비스에 전달.
      */
     @GetMapping

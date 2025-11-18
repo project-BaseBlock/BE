@@ -20,7 +20,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        // ✅ OPTIONS(프리플라이트) 요청은 필터 스킵
+        // OPTIONS(프리플라이트) 요청은 필터 스킵
         return "OPTIONS".equalsIgnoreCase(request.getMethod());
     }
 
@@ -30,9 +30,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
 
-        // ✅ Authorization 헤더가 없거나 잘못된 경우 통과
+        // Authorization 헤더가 없거나 잘못된 경우 통과
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -49,15 +54,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                // ✅ 토큰이 유효하지 않으면 컨텍스트만 비움 (403 안 던짐)
+                // 토큰이 유효하지 않으면 컨텍스트만 비움 (403 안 던짐)
                 SecurityContextHolder.clearContext();
             }
         } catch (Exception ex) {
-            // ✅ 파싱/검증 중 오류 발생해도 차단하지 않음
+            // 파싱/검증 중 오류 발생해도 차단하지 않음
             SecurityContextHolder.clearContext();
         }
 
-        // ✅ sendError 없이 그대로 다음 필터로 진행
+        // sendError 없이 그대로 다음 필터로 진행
         filterChain.doFilter(request, response);
     }
 }
