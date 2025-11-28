@@ -68,8 +68,8 @@
 ## 🧩 시스템 아키텍처 및 ERD
 
 <p align="center">
+  <img src="https://github.com/user-attachments/assets/eb88ed30-b8cc-47a4-a8c3-5d14c293ece2" width="48%">
   <img src="https://github.com/user-attachments/assets/32ae10cb-3156-4fd1-97b0-66ef1b01bfc5" width="48%">
-  <img width="964" height="594" alt="스크린샷 2025-11-28 153343" src="https://github.com/user-attachments/assets/eb88ed30-b8cc-47a4-a8c3-5d14c293ece2" />
 </p>
 
 ---
